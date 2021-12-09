@@ -357,7 +357,7 @@ EXPLANATION_NAMES['SG'] = pointer
 pointer += 1
 show_text_attr(attrs_smg2[0])
 
-# TODO : Grad
+# # Explanation 5 : Grad
 token_reference = TokenReferenceBase(reference_token_idx=0)
 vis_data_records_ig = []
 
@@ -392,7 +392,8 @@ EXPLANATIONS[pointer] = attrs_gr2[0].detach().numpy()
 EXPLANATION_NAMES['Grad'] = pointer
 pointer += 1
 show_text_attr(attrs_gr2[0])
-# TODO : Grad * Input
+
+# Explanation 6 : Grad * Input
 
 token_reference = TokenReferenceBase(reference_token_idx=0)
 vis_data_records_ig = []

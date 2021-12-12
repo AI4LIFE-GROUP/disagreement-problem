@@ -1,6 +1,7 @@
 import torch
 import captum
-from train_without_embedding_bag import TextClassificationModel
+# from train_without_embedding_bag import TextClassificationModel
+from tc_lstm import LSTMClassifier
 from torchtext.datasets import AG_NEWS
 from torch import nn
 from torchtext.data.utils import get_tokenizer
@@ -19,6 +20,11 @@ from scipy.stats.stats import pearsonr
 import itertools
 
 
+### TODO
+# 1. Compute all the explanations on all the test samples and average the rank correlation maps for them.
+# 2. Compute top-K rank correlations.
+# 3. Have a custom map to pay with K of the previous metric.
+
 NUM_EXPLANATIONS = 3
 EXPLANATIONS = dict()
 EXPLANATION_NAMES = dict()
@@ -28,7 +34,7 @@ def num_to_text(text_nums, vocab) :
     return [vocab.vocab.itos_[i] for i in text_nums]
 
 
-PATH = "./text_classification_no_offset.model"
+PATH = "./text_classification_lstm2.model"
 tokenizer = get_tokenizer('basic_english')
 train_iter = AG_NEWS(split='train')
 
@@ -110,9 +116,7 @@ def evaluate(dataloader):
 
     with torch.no_grad():
         for idx, (label, text) in enumerate(dataloader):
-            #print("One test label : ", text.shape, offsets.shape)
             predicted_label = model(text)
-            text_converted = num_to_text(text, vocab)
             loss = criterion(predicted_label, label)
             total_acc += (predicted_label.argmax(1) == label).sum().item()
             total_count += label.size(0)
@@ -138,7 +142,7 @@ split_train_, split_valid_ =     random_split(train_dataset, [num_train, len(tra
 
 test_dataloader = DataLoader(test_dataset, batch_size=BATCH_SIZE,
                              shuffle=True, collate_fn=collate_batch)
-
+print("The accuracy of the trained models : {}".format(evaluate(test_dataloader)))
 
 
 
@@ -153,8 +157,8 @@ def forward_func(text):
 
 # encode text indices into latent representations & calculate cosine similarity
 def exp_embedding_cosine_distance(original_inp, perturbed_inp, _, **kwargs):
-    original_emb = torch.mean(model.embedding(original_inp), dim = -2)
-    perturbed_emb = torch.mean(model.embedding(perturbed_inp), dim = -2)
+    original_emb = torch.mean(model.word_embeddings(original_inp), dim = -2)
+    perturbed_emb = torch.mean(model.word_embeddings(perturbed_inp), dim = -2)
     #print("-->>", original_emb.shape, perturbed_emb.shape, model.embedding(original_inp).shape)
     distance = 1 - F.cosine_similarity(original_emb, perturbed_emb, dim=1)
     return torch.exp(-1 * (distance ** 2) / 2)
@@ -213,7 +217,7 @@ def show_text_attr(attrs):
 
 
 
-show_text_attr(attrs_laso)
+# show_text_attr(attrs_laso)
 
 EXPLANATIONS[pointer] = attrs_laso.detach().numpy()
 EXPLANATION_NAMES['LI'] = pointer
@@ -232,7 +236,7 @@ test_line = ('US Men Have Right Touch in Relay Duel Against Australia THENS, Aug
 test_labels, test_text = collate_batch([(test_label, test_line)])
 
 
-interpretable_embedding = configure_interpretable_embedding_layer(model, 'embedding')
+interpretable_embedding = configure_interpretable_embedding_layer(model, 'word_embeddings')
 
 
 def construct_whole_bert_embeddings(input_ids, ref_input_ids,                                         token_type_ids=None, ref_token_type_ids=None,                                         position_ids=None, ref_position_ids=None):
@@ -260,7 +264,7 @@ def show_text_attr(attrs):
         ]    
         display(HTML('<p>' + ' '.join(token_marks) + '</p>'))
     
-show_text_attr(attribution_shap.squeeze(0))
+# show_text_attr(attribution_shap.squeeze(0))
 
 # Explanation Method 3 : Integrated Gradients
 
@@ -289,7 +293,7 @@ def interpret_sentence(model, test_text, test_labels,  pred, pred_ind, min_len=7
                                                n_steps=500, target=test_labels)
         return attributions_ig #*input_embeddings
 
-model = torch.load(PATH)
+model = torch.load(PATH, map_location=torch.device('cpu'))
 test_label = 2  # {1: World, 2: Sports, 3: Business, 4: Sci/Tec}
 test_line = ('US Men Have Right Touch in Relay Duel Against Australia THENS, Aug. 17 '
                  '- So Michael Phelps is not going to match the seven gold medals won by Mark Spitz. '
@@ -298,14 +302,14 @@ test_line = ('US Men Have Right Touch in Relay Duel Against Australia THENS, Aug
 test_labels, test_text = collate_batch([(test_label, test_line)])
 pred = F.softmax(model(test_text), dim=1)
 pred_ind = torch.round(pred)
-interpretable_embedding = configure_interpretable_embedding_layer(model, 'embedding')
+interpretable_embedding = configure_interpretable_embedding_layer(model, 'word_embeddings')
 attrs_ig = interpret_sentence(model, test_text, test_labels,  pred,pred_ind,  label=2, interpretable_embedding=interpretable_embedding)
 attrs_ig2 = torch.sum(attrs_ig, dim = -1)
 
 EXPLANATIONS[pointer] = attrs_ig2[0].detach().numpy()
 EXPLANATION_NAMES['IG'] = pointer
 pointer += 1
-show_text_attr(attrs_ig2[0])
+# show_text_attr(attrs_ig2[0])
 
 # Explanation Method 4 : Smooth Grad
 
@@ -339,7 +343,7 @@ def interpret_sentence(model, test_text, test_labels, pred, pred_ind, min_len=7,
                                          nt_samples=num_samples)
     return attribution  # *input_embeddings
 
-model = torch.load(PATH)
+model = torch.load(PATH, map_location=torch.device('cpu'))
 test_label = 2  # {1: World, 2: Sports, 3: Business, 4: Sci/Tec}
 test_line = ('US Men Have Right Touch in Relay Duel Against Australia THENS, Aug. 17 '
                  '- So Michael Phelps is not going to match the seven gold medals won by Mark Spitz. '
@@ -348,16 +352,16 @@ test_line = ('US Men Have Right Touch in Relay Duel Against Australia THENS, Aug
 test_labels, test_text = collate_batch([(test_label, test_line)])
 pred = F.softmax(model(test_text), dim=1)
 pred_ind = torch.round(pred)
-interpretable_embedding = configure_interpretable_embedding_layer(model, 'embedding')
+interpretable_embedding = configure_interpretable_embedding_layer(model, 'word_embeddings')
 attrs_smg = interpret_sentence(model, test_text, test_labels,  pred,pred_ind,  label=2, interpretable_embedding=interpretable_embedding, num_samples = 500)
 attrs_smg2 = torch.sum(attrs_smg, dim = -1)
 
-EXPLANATIONS[pointer] = attrs_smg[0].detach().numpy()
+EXPLANATIONS[pointer] = attrs_smg2[0].detach().numpy()
 EXPLANATION_NAMES['SG'] = pointer
 pointer += 1
-show_text_attr(attrs_smg2[0])
+# show_text_attr(attrs_smg2[0])
 
-# # Explanation 5 : Grad
+# Explanation Method 5 : Grad
 token_reference = TokenReferenceBase(reference_token_idx=0)
 vis_data_records_ig = []
 
@@ -375,7 +379,7 @@ def interpret_sentence(model, test_text, test_labels, pred, pred_ind, min_len=7,
     # saliency.attribute(input, target=3)
     return attribution  # *input_embeddings
 
-model = torch.load(PATH)
+model = torch.load(PATH, map_location=torch.device('cpu'))
 test_label = 2  # {1: World, 2: Sports, 3: Business, 4: Sci/Tec}
 test_line = ('US Men Have Right Touch in Relay Duel Against Australia THENS, Aug. 17 '
                  '- So Michael Phelps is not going to match the seven gold medals won by Mark Spitz. '
@@ -384,16 +388,16 @@ test_line = ('US Men Have Right Touch in Relay Duel Against Australia THENS, Aug
 test_labels, test_text = collate_batch([(test_label, test_line)])
 pred = F.softmax(model(test_text), dim=1)
 pred_ind = torch.round(pred)
-interpretable_embedding = configure_interpretable_embedding_layer(model, 'embedding')
+interpretable_embedding = configure_interpretable_embedding_layer(model, 'word_embeddings')
 attrs_gr = interpret_sentence(model, test_text, test_labels,  pred,pred_ind,  label=2, interpretable_embedding=interpretable_embedding, num_samples = 500)
 attrs_gr2 = torch.sum(attrs_gr, dim = -1)
 
 EXPLANATIONS[pointer] = attrs_gr2[0].detach().numpy()
 EXPLANATION_NAMES['Grad'] = pointer
 pointer += 1
-show_text_attr(attrs_gr2[0])
+# show_text_attr(attrs_gr2[0])
 
-# Explanation 6 : Grad * Input
+# Explanation Method 6 : Gradients * Inputs
 
 token_reference = TokenReferenceBase(reference_token_idx=0)
 vis_data_records_ig = []
@@ -412,7 +416,7 @@ def interpret_sentence(model, test_text, test_labels, pred, pred_ind, min_len=7,
     # saliency.attribute(input, target=3)
     return attribution  # *input_embeddings
 
-model = torch.load(PATH)
+model = torch.load(PATH, map_location=torch.device('cpu'))
 test_label = 2  # {1: World, 2: Sports, 3: Business, 4: Sci/Tec}
 test_line = ('US Men Have Right Touch in Relay Duel Against Australia THENS, Aug. 17 '
                  '- So Michael Phelps is not going to match the seven gold medals won by Mark Spitz. '
@@ -421,23 +425,26 @@ test_line = ('US Men Have Right Touch in Relay Duel Against Australia THENS, Aug
 test_labels, test_text = collate_batch([(test_label, test_line)])
 pred = F.softmax(model(test_text), dim=1)
 pred_ind = torch.round(pred)
-interpretable_embedding = configure_interpretable_embedding_layer(model, 'embedding')
+interpretable_embedding = configure_interpretable_embedding_layer(model, 'word_embeddings')
 attrs_gri = interpret_sentence(model, test_text, test_labels,  pred,pred_ind,  label=2, interpretable_embedding=interpretable_embedding, num_samples = 500)
 attrs_gri2 = torch.sum(attrs_gri, dim = -1)
 
 EXPLANATIONS[pointer] = attrs_gri2[0].detach().numpy()
 EXPLANATION_NAMES['IGrad'] = pointer
 pointer += 1
-show_text_attr(attrs_gri2[0])
+# show_text_attr(attrs_gri2[0])
 
 
 # In[25]:
 
+# Evaluation metric 1 : Pearson Correlation
 import numpy as np
 corr_matrix = np.zeros([pointer, pointer])
 for col_a, col_b in itertools.combinations_with_replacement(range(pointer), 2):
     corr_matrix[col_a][col_b], _ = pearsonr(EXPLANATIONS[col_a], EXPLANATIONS[col_b])
     corr_matrix[col_b][col_a] = corr_matrix[col_a][col_b]
+
+# Evaluation metric 2 : Rank Correlation -- TODO
 
 
 # In[26]: Plotting methods
@@ -468,7 +475,7 @@ def plot_confusion_matrix(index = None, column = None, data = None, plot_path = 
 # In[27]:
 
 
-plot_confusion_matrix(index = EXPLANATION_NAMES.keys(), column = EXPLANATION_NAMES.keys(), data = corr_matrix, plot_path = "three.png")
+plot_confusion_matrix(index = EXPLANATION_NAMES.keys(), column = EXPLANATION_NAMES.keys(), data = corr_matrix, plot_path ="result_text_1.png")
 
 
 # In[70]:
@@ -478,6 +485,10 @@ corr_matrix
 
 
 # In[ ]:
+
+
+
+
 
 
 

@@ -147,7 +147,6 @@ with torch.no_grad():
                         n_samples=500,
                         show_progress=False
                     ).to(device)
-        print(len(attrs_lasos))
         attrs_lasos.extend(list(zip([" ".join(vocab.lookup_tokens(list(i))) for i in text], attrs_laso)))
         if len(attrs_lasos)%32 == 0:
             end_time = time.time()

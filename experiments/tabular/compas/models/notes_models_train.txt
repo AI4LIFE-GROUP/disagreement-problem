@@ -1,0 +1,268 @@
+********** LOAD DATA **********
+
+********** MODEL 1: LOGISTIC REGRESSION **********
+
+
+********** MODEL 2: GRADIENT BOOSTED TREE **********
+
+
+********** MODEL 3: RANDOM FOREST **********
+
+
+********** MODEL 4: NEURAL NETWORK **********
+
+--------------------
+Epoch 1/20 Train Loss: 0.009388148780807803
+Epoch 1/20 Train Accuracy: 0.6795168519020081
+--------------------
+Epoch 2/20 Train Loss: 0.008090529764136689
+Epoch 2/20 Train Accuracy: 0.739013135433197
+--------------------
+Epoch 3/20 Train Loss: 0.00782211649941773
+Epoch 3/20 Train Accuracy: 0.754304826259613
+--------------------
+Epoch 4/20 Train Loss: 0.007770434090883436
+Epoch 4/20 Train Accuracy: 0.7513492703437805
+--------------------
+Epoch 5/20 Train Loss: 0.0077272686744465436
+Epoch 5/20 Train Accuracy: 0.7534052729606628
+--------------------
+Epoch 6/20 Train Loss: 0.007710727558317358
+Epoch 6/20 Train Accuracy: 0.7568748593330383
+--------------------
+Epoch 7/20 Train Loss: 0.007731777074189335
+Epoch 7/20 Train Accuracy: 0.7534052729606628
+--------------------
+Epoch 8/20 Train Loss: 0.0076828873791690965
+Epoch 8/20 Train Accuracy: 0.7566178441047668
+--------------------
+Epoch 9/20 Train Loss: 0.007665121311762743
+Epoch 9/20 Train Accuracy: 0.7577743530273438
+--------------------
+Epoch 10/20 Train Loss: 0.00766120830742751
+Epoch 10/20 Train Accuracy: 0.760858416557312
+--------------------
+Epoch 11/20 Train Loss: 0.007693373185753118
+Epoch 11/20 Train Accuracy: 0.7606014013290405
+--------------------
+Epoch 12/20 Train Loss: 0.0076489020507582595
+Epoch 12/20 Train Accuracy: 0.7613723874092102
+--------------------
+Epoch 13/20 Train Loss: 0.007659431461716826
+Epoch 13/20 Train Accuracy: 0.7611153721809387
+--------------------
+Epoch 14/20 Train Loss: 0.0076290649823620394
+Epoch 14/20 Train Accuracy: 0.7586738467216492
+--------------------
+Epoch 15/20 Train Loss: 0.007635508813547984
+Epoch 15/20 Train Accuracy: 0.7602158784866333
+--------------------
+Epoch 16/20 Train Loss: 0.0076113136399530625
+Epoch 16/20 Train Accuracy: 0.760858416557312
+--------------------
+Epoch 17/20 Train Loss: 0.0076132178291261
+Epoch 17/20 Train Accuracy: 0.7626574039459229
+--------------------
+Epoch 18/20 Train Loss: 0.007629839467438595
+Epoch 18/20 Train Accuracy: 0.7590593695640564
+--------------------
+Epoch 19/20 Train Loss: 0.007586878443156438
+Epoch 19/20 Train Accuracy: 0.7657414674758911
+--------------------
+Epoch 20/20 Train Loss: 0.0075700839957980135
+Epoch 20/20 Train Accuracy: 0.7643279433250427
+
+********** MODEL 5: LOGISTIC REGRESSION AS NEURAL NETWORK **********
+
+
+********** FFNN A **********
+
+--------------------
+Epoch 1/20 Train Loss: 0.010680427207520308
+Epoch 1/20 Train Accuracy: 0.5708044171333313
+--------------------
+Epoch 2/20 Train Loss: 0.00975916980624781
+Epoch 2/20 Train Accuracy: 0.6928809881210327
+--------------------
+Epoch 3/20 Train Loss: 0.008988582786910794
+Epoch 3/20 Train Accuracy: 0.7194808721542358
+--------------------
+Epoch 4/20 Train Loss: 0.008535956706831615
+Epoch 4/20 Train Accuracy: 0.7307890057563782
+--------------------
+Epoch 5/20 Train Loss: 0.00826778755537865
+Epoch 5/20 Train Accuracy: 0.7379850745201111
+--------------------
+Epoch 6/20 Train Loss: 0.008081240366461712
+Epoch 6/20 Train Accuracy: 0.7449241876602173
+--------------------
+Epoch 7/20 Train Loss: 0.007949061521341672
+Epoch 7/20 Train Accuracy: 0.7458236813545227
+--------------------
+Epoch 8/20 Train Loss: 0.007847409721237012
+Epoch 8/20 Train Accuracy: 0.7508352398872375
+--------------------
+Epoch 9/20 Train Loss: 0.007811980887355182
+Epoch 9/20 Train Accuracy: 0.7537907958030701
+--------------------
+Epoch 10/20 Train Loss: 0.007774301847925042
+Epoch 10/20 Train Accuracy: 0.7539193034172058
+--------------------
+Epoch 11/20 Train Loss: 0.007762295288035938
+Epoch 11/20 Train Accuracy: 0.757645845413208
+--------------------
+Epoch 12/20 Train Loss: 0.0077600130015245536
+Epoch 12/20 Train Accuracy: 0.7559753060340881
+--------------------
+Epoch 13/20 Train Loss: 0.0077355490555588
+Epoch 13/20 Train Accuracy: 0.7582883834838867
+--------------------
+Epoch 14/20 Train Loss: 0.007726021166541404
+Epoch 14/20 Train Accuracy: 0.7588023543357849
+--------------------
+Epoch 15/20 Train Loss: 0.007739416008374281
+Epoch 15/20 Train Accuracy: 0.7573888301849365
+--------------------
+Epoch 16/20 Train Loss: 0.007715379983470116
+Epoch 16/20 Train Accuracy: 0.7600873708724976
+--------------------
+Epoch 17/20 Train Loss: 0.007725009051793279
+Epoch 17/20 Train Accuracy: 0.7594448924064636
+--------------------
+Epoch 18/20 Train Loss: 0.007717301739239503
+Epoch 18/20 Train Accuracy: 0.7598303556442261
+--------------------
+Epoch 19/20 Train Loss: 0.007714546521811092
+Epoch 19/20 Train Accuracy: 0.7579028606414795
+--------------------
+Epoch 20/20 Train Loss: 0.007718100990651047
+Epoch 20/20 Train Accuracy: 0.7582883834838867
+
+********** FFNN B **********
+
+--------------------
+Epoch 1/20 Train Loss: 0.010764066387466709
+Epoch 1/20 Train Accuracy: 0.5525571703910828
+--------------------
+Epoch 2/20 Train Loss: 0.009941467755375777
+Epoch 2/20 Train Accuracy: 0.6831148862838745
+--------------------
+Epoch 3/20 Train Loss: 0.008754494004248348
+Epoch 3/20 Train Accuracy: 0.7295039892196655
+--------------------
+Epoch 4/20 Train Loss: 0.008202265169681176
+Epoch 4/20 Train Accuracy: 0.7401696443557739
+--------------------
+Epoch 5/20 Train Loss: 0.007935473864380604
+Epoch 5/20 Train Accuracy: 0.7507067322731018
+--------------------
+Epoch 6/20 Train Loss: 0.007830157837718227
+Epoch 6/20 Train Accuracy: 0.7521202564239502
+--------------------
+Epoch 7/20 Train Loss: 0.00779362064619905
+Epoch 7/20 Train Accuracy: 0.7530198097229004
+--------------------
+Epoch 8/20 Train Loss: 0.007747486743054455
+Epoch 8/20 Train Accuracy: 0.7570033669471741
+--------------------
+Epoch 9/20 Train Loss: 0.007758341371568853
+Epoch 9/20 Train Accuracy: 0.7555898427963257
+--------------------
+Epoch 10/20 Train Loss: 0.007746984086408005
+Epoch 10/20 Train Accuracy: 0.7577743530273438
+--------------------
+Epoch 11/20 Train Loss: 0.0077527055042441355
+Epoch 11/20 Train Accuracy: 0.7573888301849365
+--------------------
+Epoch 12/20 Train Loss: 0.007765438153945337
+Epoch 12/20 Train Accuracy: 0.7584168314933777
+--------------------
+Epoch 13/20 Train Loss: 0.007737833295190772
+Epoch 13/20 Train Accuracy: 0.7568748593330383
+--------------------
+Epoch 14/20 Train Loss: 0.0077309361485459445
+Epoch 14/20 Train Accuracy: 0.7620149254798889
+--------------------
+Epoch 15/20 Train Loss: 0.007747297684811161
+Epoch 15/20 Train Accuracy: 0.7553328275680542
+--------------------
+Epoch 16/20 Train Loss: 0.007723326484362285
+Epoch 16/20 Train Accuracy: 0.7590593695640564
+--------------------
+Epoch 17/20 Train Loss: 0.007733888202233169
+Epoch 17/20 Train Accuracy: 0.7604728937149048
+--------------------
+Epoch 18/20 Train Loss: 0.007724438108689557
+Epoch 18/20 Train Accuracy: 0.7590593695640564
+--------------------
+Epoch 19/20 Train Loss: 0.00772332178155428
+Epoch 19/20 Train Accuracy: 0.7575173377990723
+--------------------
+Epoch 20/20 Train Loss: 0.007724239483985028
+Epoch 20/20 Train Accuracy: 0.7598303556442261
+
+********** FFNN C **********
+
+--------------------
+Epoch 1/20 Train Loss: 0.010819537386554766
+Epoch 1/20 Train Accuracy: 0.5758159756660461
+--------------------
+Epoch 2/20 Train Loss: 0.010125500718967003
+Epoch 2/20 Train Accuracy: 0.6772037744522095
+--------------------
+Epoch 3/20 Train Loss: 0.00894549624590848
+Epoch 3/20 Train Accuracy: 0.7211513519287109
+--------------------
+Epoch 4/20 Train Loss: 0.008325708204264263
+Epoch 4/20 Train Accuracy: 0.7365715503692627
+--------------------
+Epoch 5/20 Train Loss: 0.007955110098365277
+Epoch 5/20 Train Accuracy: 0.7499357461929321
+--------------------
+Epoch 6/20 Train Loss: 0.007832283476299138
+Epoch 6/20 Train Accuracy: 0.7513492703437805
+--------------------
+Epoch 7/20 Train Loss: 0.007798507480289231
+Epoch 7/20 Train Accuracy: 0.7536622881889343
+--------------------
+Epoch 8/20 Train Loss: 0.007749197948594781
+Epoch 8/20 Train Accuracy: 0.7564893364906311
+--------------------
+Epoch 9/20 Train Loss: 0.007757219771007988
+Epoch 9/20 Train Accuracy: 0.7561038136482239
+--------------------
+Epoch 10/20 Train Loss: 0.007747948460761516
+Epoch 10/20 Train Accuracy: 0.760344386100769
+--------------------
+Epoch 11/20 Train Loss: 0.007755723983179601
+Epoch 11/20 Train Accuracy: 0.757131814956665
+--------------------
+Epoch 12/20 Train Loss: 0.007772902888922053
+Epoch 12/20 Train Accuracy: 0.7536622881889343
+--------------------
+Epoch 13/20 Train Loss: 0.0077406053132858905
+Epoch 13/20 Train Accuracy: 0.7552043199539185
+--------------------
+Epoch 14/20 Train Loss: 0.007735421666140668
+Epoch 14/20 Train Accuracy: 0.7591878771781921
+--------------------
+Epoch 15/20 Train Loss: 0.007747955449869504
+Epoch 15/20 Train Accuracy: 0.7541763186454773
+--------------------
+Epoch 16/20 Train Loss: 0.007727385892319024
+Epoch 16/20 Train Accuracy: 0.7566178441047668
+--------------------
+Epoch 17/20 Train Loss: 0.007741174812612237
+Epoch 17/20 Train Accuracy: 0.7586738467216492
+--------------------
+Epoch 18/20 Train Loss: 0.007729601726774629
+Epoch 18/20 Train Accuracy: 0.7585453391075134
+--------------------
+Epoch 19/20 Train Loss: 0.007730992743087225
+Epoch 19/20 Train Accuracy: 0.7572603225708008
+--------------------
+Epoch 20/20 Train Loss: 0.007731601412055487
+Epoch 20/20 Train Accuracy: 0.7618864178657532
+
+********** COMPLETE **********
+

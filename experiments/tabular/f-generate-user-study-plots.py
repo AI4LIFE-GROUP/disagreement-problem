@@ -191,9 +191,29 @@ for idx_method_pair, (idx_methodA, idx_methodB) in enumerate(itertools.combinati
     fig, axes = plt.subplots(1, 2, figsize =(16, 4))
     for i in [1, 2]:
         colors = ['cornflowerblue' if x > 0 else 'tomato' for x in expl_df[f'expl{i}']]
-        method1 = sns.barplot(y='feature', x=f'expl{i}', data=expl_df, ax=axes[i-1], palette=colors)
+        ax = axes[i-1]
+        
+        #round decimal so that label of bar is rounded
+        df = round(expl_df, 2)
+        df['expl1'] = np.where(df['expl1'] == -0.00, 0, df['expl1']) #change -0.00 to 0
+        df['expl2'] = np.where(df['expl2'] == -0.00, 0, df['expl2'])
+        
+        #plot
+        method1 = sns.barplot(y='feature', x=f'expl{i}', data=df, ax=ax, palette=colors) 
         method_name = expl_methods_names[idx_methodA] if i==1 else expl_methods_names[idx_methodB]
         method1.set(xlabel=f'{method_name} Importance Score', ylabel='Feature', title=method_name)
+        
+        #make x-axis symmetric around 0
+        x_abs_max = abs(max(ax.get_xlim(), key=abs))
+        x_abs_max = 1.15*x_abs_max
+        ax.set_xlim(xmin=-x_abs_max, xmax=x_abs_max)
+        
+        #add vertical dotted line at x=0
+        ax.axvline(x=0, linestyle='--', color='black')
+        
+        #add labels for each bar
+        for container in ax.containers:
+            ax.bar_label(container, padding=5)
 
     fig.tight_layout()
     plot_path=f'{dataset_name}/figures/user-study/compas_{expl_methods_names[idx_methodA]}_{expl_methods_names[idx_methodB]}_idx{idx_point}.png'

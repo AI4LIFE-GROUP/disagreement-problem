@@ -1,7 +1,7 @@
 import numpy as np
 import pickle
 import itertools
-from metrics import rankcorr, pairwise_rank_agreement, agreement_fraction
+from metrics import rankcorr, pairwise_rank_agreement, agreement_fraction, modified_rank_agreement
 
 from scipy.stats import sem
 
@@ -88,7 +88,8 @@ dict_title_metrics = {'feature': 'Feature agreement',
                       'sign': 'Sign agreement', 
                       'signedrank': 'Signed rank agreement',
                       'rc': 'Rank correlation', 
-                      'pra': 'Pairwise rank agreement', }
+                      'pra': 'Pairwise rank agreement',
+                       'ra' : 'Weighted rank agreement'}
 
 
 
@@ -190,6 +191,8 @@ def calculate_and_plot_metrics(dict_model_expl_combos, metric, k):
                 metric_distr_onemethodpair = rankcorr(explA, explB)
             if metric=='pra':
                 metric_distr_onemethodpair = pairwise_rank_agreement(explA, explB)
+            if metric == "ra":
+                metric_distr_onemethodpair = modified_rank_agreement(explA, explB, k)
 
             #store metric distribution
             metric_distr[idxA, idxB, :] = metric_distr_onemethodpair
@@ -200,7 +203,7 @@ def calculate_and_plot_metrics(dict_model_expl_combos, metric, k):
                 metric_distr_dict[f'{dict_title_methods_boxplot[method_nameA]} vs. {dict_title_methods_boxplot[method_nameB]}'] = metric_distr_onemethodpair
 
         ###plot boxplot
-        plot_folder = f'{dataset_name}/figures/disagreement/'
+        plot_folder = f'{dataset_name}/figures/disagreement/ra_plots/'
         plot_name_boxplot = f'{model_name}_{metric}_distr.png' if metric in ['rc', 'pra'] else f'{model_name}_{metric}_k{k}_distr.png'
         plot_path= plot_folder + plot_name_boxplot
         matplotlib.rc_file_defaults() #make background white for plots
@@ -236,15 +239,15 @@ for model_name in ['rf', 'gb']:
                                           'ks': expl_ks[model_name]}
 
 
-#non top-k-based metrics
-for metric in ['rc', 'pra']:
-    print(f'***** metric={metric}*****')
-    calculate_and_plot_metrics(dict_model_expl_combos, metric, k=None) 
+# #non top-k-based metrics
+# for metric in ['rc', 'pra']:
+#     print(f'***** metric={metric}*****')
+#     calculate_and_plot_metrics(dict_model_expl_combos, metric, k=None) 
 
 
 
 #top-k-based metrics
-for metric in ['feature', 'rank', 'sign', 'signedrank']:
+for metric in ['ra', 'rank']: #['feature', 'rank', 'sign', 'signedrank', 'ra']:
     for k in list_ks:
         print(f'***** metric={metric}, k={k}*****')
         calculate_and_plot_metrics(dict_model_expl_combos, metric, k)

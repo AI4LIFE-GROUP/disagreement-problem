@@ -2,7 +2,7 @@ import pickle
 import numpy as np
 
 import itertools
-from metrics import rankcorr, pairwise_rank_agreement, agreement_fraction
+from metrics import rankcorr, pairwise_rank_agreement, agreement_fraction, modified_rank_agreement
 
 from scipy.stats import spearmanr, percentileofscore
 
@@ -73,7 +73,7 @@ n_points = expl_dict[0].shape[0] #number of points in test set (number of data p
 n_methods = 6
 factorial = np.math.factorial
 n_methodpairs = int(factorial(n_methods)/( factorial(n_methods-2) * factorial(2) )) #n_methods choose 2
-n_metrics = 6
+n_metrics = 7
 n_features = expl_dict[0].shape[1] #number of features in compas dataset = 7
 
 #set up matrix to fill in
@@ -94,9 +94,11 @@ for idx_method_pair, (idx_methodA, idx_methodB) in enumerate(itertools.combinati
     ra = agreement_fraction(attrA, attrB, k=n_features, metric='rank') #rank agreement, k=all features
     sa = agreement_fraction(attrA, attrB, k=n_features, metric='sign') #sign agreement, k=all features
     sra = agreement_fraction(attrA, attrB, k=n_features, metric='signedrank') #signed rank agreement, k=all features
+    ra_k = modified_rank_agreement(attrA, attrB, k= n_features)
 
     #fill in 2D slice of metrics_per_point (3D matrix)
-    metrics_pointxmetricxpair[:, :, idx_method_pair] = np.stack([rc, pra, fa, ra, sa, sra], axis=1) #n_points x n_metrics
+    print(ra_k, sra)
+    metrics_pointxmetricxpair[:, :, idx_method_pair] = np.stack([rc, pra, fa, ra, sa, sra, ra_k], axis=1) #n_points x n_metrics
 
 
 
